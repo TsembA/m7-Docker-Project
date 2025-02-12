@@ -49,13 +49,11 @@ Docker Compose is a tool for defining and running multiple docker containers
 * It's help easier to maintain and update configuration
 
 ### Dockerfile
-A simple text file that consists of instructions to build Docker images
-Dockerfile is used in CI/CD to build the Docker image artifact, which will be pushed to Docker repo
+Dockerfile it's a blueprint for building images
+Dockerfile is used in CI/CD to build the Docker image artifact, which later will be pushed to Docker repo
 
 Docker image can then be pushed to multiple remote servers or pulled locally for development and
 testing etc
-
-e.g. Dockerfile it's a blueprint for building images
 
 # Best practices:
 * Use official Docker images as Base image
