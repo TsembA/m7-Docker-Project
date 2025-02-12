@@ -58,8 +58,8 @@ testing etc
 e.g. Dockerfile it's a blueprint for building images
 
 FROM apline:18 (Image based on)
-WORKDIR /usr/src/app (define working directory, all command will be executed relative to this directory)
-COPY app /usr/src/app (Copy files from local machine to container)
+WORKDIR /usr/src/app (define working directory, all command will be executed relative to this directory)|
+COPY app /usr/src/app (Copy files from local machine to container)|
 RUN npm install (Run building tool command to install all necessary dependencies)
 EXPOSE 3000 (Informs Docker that the container listens on port 3000 )
 CMD ["npm", "start"] (Specifies the default command to run when the container starts.)
