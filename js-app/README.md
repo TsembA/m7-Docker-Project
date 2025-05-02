@@ -1,72 +1,150 @@
-## demo app - developing with Docker
+## 🧩 Demo App: User Profile with Docker
 
-This demo app shows a simple user profile app set up using 
-- index.html with pure js and css styles
-- nodejs backend with express module
-- mongodb for data storage
+This demo app consists of:
 
-All components are docker-based
+- ✅ `index.html` (vanilla JS & CSS)
+- ✅ Node.js backend with Express
+- ✅ MongoDB database
+- ✅ Docker & Docker Compose setup
 
-### With Docker
+---
 
-#### To start the application
+## 🚀 Getting Started
 
-Step 1: Create docker network
+### 🔧 Option 1: Run with Docker CLI
 
-    docker network create mongo-network 
+#### Step 1: Create Network (optional)
 
-Step 2: start mongodb 
+```bash
+docker network create mongo-network
+```
 
-    docker run -d -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password --name mongodb --net mongo-network mongo    
+#### Step 2: Start MongoDB
 
-Step 3: start mongo-express
-    
-    docker run -d -p 8081:8081 -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin -e ME_CONFIG_MONGODB_ADMINPASSWORD=password --net mongo-network --name mongo-express -e ME_CONFIG_MONGODB_SERVER=mongodb mongo-express   
+```bash
+docker run -d \
+  -p 27017:27017 \
+  -e MONGO_INITDB_ROOT_USERNAME=admin \
+  -e MONGO_INITDB_ROOT_PASSWORD=password \
+  --name mongodb \
+  --net mongo-network \
+  mongo
 
-_NOTE: creating docker-network in optional. You can start both containers in a default network. In this case, just emit `--net` flag in `docker run` command_
+```
 
-Step 4: open mongo-express from browser
+#### Step 3: Start Mongo Express
 
-    http://localhost:8081
+```bash
+docker run -d \
+  -p 8081:8081 \
+  -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin \
+  -e ME_CONFIG_MONGODB_ADMINPASSWORD=password \
+  -e ME_CONFIG_MONGODB_SERVER=mongodb \
+  --net mongo-network \
+  --name mongo-express \
+  mongo-express
 
-Step 5: create `user-account` _db_ and `users` _collection_ in mongo-express
+```
 
-Step 6: Start your nodejs application locally - go to `app` directory of project 
+#### Step 4: Open Mongo Express UI
 
-    cd app
-    npm install 
-    node server.js
-    
-Step 7: Access you nodejs application UI from browser
+```
+http://localhost:8081
+```
 
-    http://localhost:3000
+Use it to create:
 
-### With Docker Compose
+- Database: `user-account`
+- Collection: `users`
 
-#### To start the application
+#### Step 5: Start Node.js App
 
-Step 1: start mongodb and mongo-express
+```bash
+cd app
+npm install
+node server.js
+```
 
-    docker-compose -f docker-compose.yaml up
-    
-_You can access the mongo-express under localhost:8080 from your browser_
-    
-Step 2: in mongo-express UI - create a new database "user-account"
+#### Step 6: Open the App
 
-Step 3: in mongo-express UI - create a new collection "users" in the database "user-account"       
-    
-Step 4: start node server 
+```
+http://localhost:3000
+```
 
-    cd app
-    npm install
-    node server.js
-    
-Step 5: access the nodejs application from browser 
+---
 
-    http://localhost:3000
+### 🐳 Option 2: Run with Docker Compose
 
-#### To build a docker image from the application
+#### Step 1: Start All Services
 
-    docker build -t my-app:1.0 .       
-    
-The dot "." at the end of the command denotes location of the Dockerfile.
+```bash
+docker-compose -f docker-compose.yaml up
+```
+
+Mongo Express will be accessible at:
+
+```
+http://localhost:8080
+```
+
+#### Step 2: Create MongoDB Database & Collection
+
+- Database: `user-account`
+- Collection: `users`
+
+#### Step 3: Start Node Server
+
+```bash
+cd app
+npm install
+node server.js
+```
+
+#### Step 4: Open the App
+
+```
+http://localhost:3000
+```
+
+---
+
+## 🛠️ Build Image from Dockerfile
+
+```bash
+docker build -t my-app:1.0 .
+```
+
+> The dot (`.`) refers to the location of your Dockerfile.
+
+---
+
+## 📁 Folder Structure
+
+```
+.
+├── app/
+│   ├── index.html
+│   ├── server.js
+│   ├── package.json
+├── docker-compose.yaml
+├── Dockerfile
+└── README.md
+```
+
+---
+
+## ✅ Features
+
+- Minimal and clean container setup
+- MongoDB GUI via mongo-express
+- Reusable across environments
+- Hands-on with CLI and Compose
+
+---
+
+## 🙌 Final Notes
+
+- Replace hardcoded creds in production!
+- Use `.env` files for better secrets management
+
+---
