@@ -110,7 +110,9 @@ RUN npm install
 # Start the application
 CMD ["node", "server.js"]
 
+```
 ---
+
 ### 🚀 Docker Best Practices
 
 #### **1. Image Building Best Practices:**
@@ -129,10 +131,4 @@ CMD ["node", "server.js"]
 
 - **Use `.dockerignore`**  
   Use a `.dockerignore` file to **exclude unnecessary files** (e.g., `node_modules`, build folders, and local environment files) from being copied into the Docker image. This reduces image size and improves build performance.
-
-#### ⭐ **Why Follow These Best Practices?**  
-By using Docker and adhering to these best practices, you ensure your applications will:  
-- **Run consistently** across all environments (development, testing, production).
-- **Streamline deployment and scaling**, allowing for faster updates and easier management.
-
 ---
