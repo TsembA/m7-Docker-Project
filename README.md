@@ -110,7 +110,7 @@ RUN npm install
 # Start the application
 CMD ["node", "server.js"]
 
-
+```
 
 🚀 Docker Best Practices
 
