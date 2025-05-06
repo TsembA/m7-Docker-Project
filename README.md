@@ -1,4 +1,4 @@
-# 🐳 What is Docker?
+# 🐳 What is Docker? + Project
 
 Docker is an **open-source containerization platform** that allows developers to package applications and their dependencies into **containers**. Containers provide a **consistent environment** to run applications across development, testing, and production.
 
