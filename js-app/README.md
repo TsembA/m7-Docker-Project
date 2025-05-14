@@ -1,150 +1,107 @@
-## 🧩 Demo App: User Profile with Docker
+# 🐳 Module 7 Demo Project: Use Docker for Local Development
 
-This demo app consists of:
-
-- ✅ `index.html` (vanilla JS & CSS)
-- ✅ Node.js backend with Express
-- ✅ MongoDB database
-- ✅ Docker & Docker Compose setup
+## 🛠️ Technologies Used
+- **Docker** – Container platform for building and running isolated applications.
+- **Node.js** – JavaScript runtime used for the backend application.
+- **MongoDB** – NoSQL database container.
+- **MongoExpress** – Web-based MongoDB UI container.
 
 ---
 
-## 🚀 Getting Started
+## 📄 Project Description
 
-### 🔧 Option 1: Run with Docker CLI
+This project demonstrates how to use **Docker** to containerize a local development environment. It includes:
 
-#### Step 1: Create Network (optional)
+- A Node.js backend application running in a Docker container.
+- A MongoDB database container for persistence.
+- A MongoExpress container as a web UI for managing MongoDB.
 
-```bash
-docker network create mongo-network
-```
+---
 
-#### Step 2: Start MongoDB
+## ✅ Step-by-Step Guide
 
-```bash
-docker run -d \
-  -p 27017:27017 \
-  -e MONGO_INITDB_ROOT_USERNAME=admin \
-  -e MONGO_INITDB_ROOT_PASSWORD=password \
-  --name mongodb \
-  --net mongo-network \
-  mongo
+### Step 1: Create a `Dockerfile` for the Node.js App
+```dockerfile
+# Dockerfile
+FROM node:18
 
-```
+WORKDIR /app
 
-#### Step 3: Start Mongo Express
+COPY package*.json ./
+RUN npm install
 
-```bash
-docker run -d \
-  -p 8081:8081 \
-  -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin \
-  -e ME_CONFIG_MONGODB_ADMINPASSWORD=password \
-  -e ME_CONFIG_MONGODB_SERVER=mongodb \
-  --net mongo-network \
-  --name mongo-express \
-  mongo-express
+COPY . .
 
-```
-
-#### Step 4: Open Mongo Express UI
-
-```
-http://localhost:8081
-```
-
-Use it to create:
-
-- Database: `user-account`
-- Collection: `users`
-
-#### Step 5: Start Node.js App
-
-```bash
-cd app
-npm install
-node server.js
-```
-
-#### Step 6: Open the App
-
-```
-http://localhost:3000
+EXPOSE 3000
+CMD ["npm", "start"]
 ```
 
 ---
 
-### 🐳 Option 2: Run with Docker Compose
+### Step 2: Create a `docker-compose.yml` File
+```yaml
+version: "3.8"
 
-#### Step 1: Start All Services
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/mydatabase
+    depends_on:
+      - mongo
 
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin
+
+volumes:
+  mongo-data:
+```
+
+---
+
+### Step 3: Build and Start the Environment
 ```bash
-docker-compose -f docker-compose.yaml up
-```
-
-Mongo Express will be accessible at:
-
-```
-http://localhost:8080
-```
-
-#### Step 2: Create MongoDB Database & Collection
-
-- Database: `user-account`
-- Collection: `users`
-
-#### Step 3: Start Node Server
-
-```bash
-cd app
-npm install
-node server.js
-```
-
-#### Step 4: Open the App
-
-```
-http://localhost:3000
+docker-compose up --build
 ```
 
 ---
 
-## 🛠️ Build Image from Dockerfile
+### Step 4: Access the Services
 
-```bash
-docker build -t my-app:1.0 .
-```
-
-> The dot (`.`) refers to the location of your Dockerfile.
+- **Node.js App**: [http://localhost:3000](http://localhost:3000)
+- **MongoExpress UI**: [http://localhost:8081](http://localhost:8081)
 
 ---
 
-## 📁 Folder Structure
+### Step 5: Manage and Verify
 
-```
-.
-├── app/
-│   ├── index.html
-│   ├── server.js
-│   ├── package.json
-├── docker-compose.yaml
-├── Dockerfile
-└── README.md
-```
+- Use MongoExpress to verify documents in your MongoDB collections.
+- Modify your Node.js app and restart the container to reflect changes.
 
 ---
 
-## ✅ Features
+## 🎯 Result
 
-- Minimal and clean container setup
-- MongoDB GUI via mongo-express
-- Reusable across environments
-- Hands-on with CLI and Compose
+You now have a fully containerized local development environment using Docker Compose with:
 
----
+- A live-running Node.js backend
+- Persistent MongoDB database
+- Visual MongoDB management UI via MongoExpress
 
-## 🙌 Final Notes
-
-- Replace hardcoded creds in production!
-- Use `.env` files for better secrets management
-
----
+This setup boosts productivity and ensures consistency across development environments.
